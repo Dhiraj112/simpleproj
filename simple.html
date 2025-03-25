@@ -3,31 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laptops in Nepal</title>
+    <title>Premier League Stats</title>
     <link rel="stylesheet" href="simple.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Laptops in Nepal</h1>
+            <h1>Premier League Team Statistics</h1>
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search laptops...">
-                <select id="filterBrand">
-                    <option value="">All Brands</option>
+                <input type="text" id="searchInput" placeholder="Search teams...">
+                <select id="filterSeason">
+                    <option value="2023">2023-2024</option>
+                    <option value="2022">2022-2023</option>
+                    <option value="2021">2021-2022</option>
                 </select>
                 <select id="sortBy">
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="name">Name</option>
+                    <option value="rank">Rank</option>
+                    <option value="points-desc">Points (High to Low)</option>
+                    <option value="name">Team Name</option>
+                    <option value="wins-desc">Most Wins</option>
+                    <option value="goals-desc">Most Goals</option>
                 </select>
             </div>
         </header>
         
-        <div id="laptopContainer" class="laptop-grid">
-            <!-- Laptops will be displayed here -->
-            <div class="loading">Loading laptop data...</div>
+        <div class="stats-summary">
+            <div class="stats-box total-matches">
+                <h3>Total Matches</h3>
+                <p id="totalMatches">-</p>
+            </div>
+            <div class="stats-box total-goals">
+                <h3>Total Goals</h3>
+                <p id="totalGoals">-</p>
+            </div>
+            <div class="stats-box avg-goals">
+                <h3>Avg. Goals/Match</h3>
+                <p id="avgGoals">-</p>
+            </div>
+        </div>
+        
+        <div id="teamsContainer" class="teams-grid">
+            <!-- Teams will be displayed here -->
+            <div class="loading">Loading Premier League data...</div>
         </div>
     </div>
+    
+    <!-- Club Details Modal -->
+    <div id="clubDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="club-details-header">
+                <img id="clubLogo" src="" alt="Club Logo" class="club-details-logo">
+                <div class="club-details-title">
+                    <h2 id="clubName">Club Name</h2>
+                    <p id="clubVenue">Venue</p>
+                </div>
+            </div>
+            
+            <div class="club-tabs">
+                <button class="tab-button active" data-tab="overview">Overview</button>
+                <button class="tab-button" data-tab="squad">Squad</button>
+                <button class="tab-button" data-tab="fixtures">Fixtures</button>
+                <button class="tab-button" data-tab="stats">Statistics</button>
+            </div>
+            
+            <div class="club-tab-content">
+                <!-- Overview Tab -->
+                <div id="overview" class="tab-pane active">
+                    <div class="club-info-section">
+                        <h3>Club Information</h3>
+                        <div class="club-info-grid">
+                            <div class="info-item">
+                                <strong>Founded:</strong>
+                                <span id="clubFounded">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Country:</strong>
+                                <span id="clubCountry">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>City:</strong>
+                                <span id="clubCity">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Stadium:</strong>
+                                <span id="clubStadium">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Capacity:</strong>
+                                <span id="clubCapacity">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Manager:</strong>
+                                <span id="clubManager">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="club-season-summary">
+                        <h3>Season Summary</h3>
+                        <div class="summary-stats-grid">
+                            <div class="summary-stat">
+                                <span id="seasonRank">-</span>
+                                <label>Rank</label>
+                            </div>
+                            <div class="summary-stat">
+                                <span id="seasonPoints">-</span>
+                                <label>Points</label>
+                            </div>
+                            <div class="summary-stat">
+                                <span id="seasonWins">-</span>
+                                <label>Wins</label>
+                            </div>
+                            <div class="summary-stat">
+                                <span id="seasonDraws">-</span>
+                                <label>Draws</label>
+                            </div>
+                            <div class="summary-stat">
+                                <span id="seasonLosses">-</span>
+                                <label>Losses</label>
+                            </div>
+                            <div class="summary-stat">
+                                <span id="seasonGoalsFor">-</span>
+                                <label>Goals For</label>
+                            </div>
+                            <div class="summary-stat">
+                                <span id="seasonGoalsAgainst">-</span>
+                                <label>Goals Against</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Squad Tab -->
+                <div id="squad" class="tab-pane">
+                    <h3>Team Squad</h3>
+                    <div class="position-group">
+                        <h4>Goalkeepers</h4>
+                        <div id="goalkeepers" class="players-grid"></div>
+                    </div>
+                    <div class="position-group">
+                        <h4>Defenders</h4>
+                        <div id="defenders" class="players-grid"></div>
+                    </div>
+                    <div class="position-group">
+                        <h4>Midfielders</h4>
+                        <div id="midfielders" class="players-grid"></div>
+                    </div>
+                    <div class="position-group">
+                        <h4>Attackers</h4>
+                        <div id="attackers" class="players-grid"></div>
+                    </div>
+                </div>
+                
+                <!-- Fixtures Tab -->
+                <div id="fixtures" class="tab-pane">
+                    <div class="fixtures-section">
+                        <h3>Recent & Upcoming Matches</h3>
+                        <div id="fixturesList" class="fixtures-list"></div>
+                    </div>
+                </div>
+                
+                <!-- Statistics Tab -->
+                <div id="stats" class="tab-pane">
+                    <div class="stats-grid">
+                        <div class="stats-card">
+                            <h3>Top Scorers</h3>
+                            <div id="topScorers" class="stats-list"></div>
+                        </div>
+                        <div class="stats-card">
+                            <h3>Most Assists</h3>
+                            <div id="topAssists" class="stats-list"></div>
+                        </div>
+                        <div class="stats-card">
+                            <h3>Most Cards</h3>
+                            <div id="mostCards" class="stats-list"></div>
+                        </div>
+                        <div class="stats-card">
+                            <h3>Most Appearances</h3>
+                            <div id="mostAppearances" class="stats-list"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="formation-section">
+                        <h3>Most Used Formation</h3>
+                        <div id="formationDisplay" class="formation-display">
+                            <div class="formation-visual">
+                                <div id="formationName">-</div>
+                                <div id="formationPitch" class="formation-pitch"></div>
+                            </div>
+                            <div class="formation-stats">
+                                <div class="formation-stat">
+                                    <strong>Played:</strong>
+                                    <span id="formationPlayed">-</span>
+                                </div>
+                                <div class="formation-stat">
+                                    <strong>Win Rate:</strong>
+                                    <span id="formationWinRate">-</span>
+                                </div>
+                                <div class="formation-stat">
+                                    <strong>Goals/Game:</strong>
+                                    <span id="formationGoalsPerGame">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="modalLoader" class="modal-loader">
+                <div class="loader-spinner"></div>
+                <p>Loading club details...</p>
+            </div>
+        </div>
+    </div>
+    
     <script src="simple.js"></script>
 </body>
 </html>
