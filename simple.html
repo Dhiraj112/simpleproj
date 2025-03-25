@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptops in Nepal</title>
+    <link rel="stylesheet" href="simple.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Laptops in Nepal</h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search laptops...">
+                <select id="filterBrand">
+                    <option value="">All Brands</option>
+                </select>
+                <select id="sortBy">
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="name">Name</option>
+                </select>
+            </div>
+        </header>
+        
+        <div id="laptopContainer" class="laptop-grid">
+            <!-- Laptops will be displayed here -->
+            <div class="loading">Loading laptop data...</div>
+        </div>
+    </div>
+    <script src="simple.js"></script>
+</body>
+</html>
